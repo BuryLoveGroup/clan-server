@@ -1,25 +1,57 @@
 package com.clan;
 
+import com.clan.annotation.InitAnnotation;
+import com.clan.handler.RootHandler;
+import com.clan.handler.UserHandler;
+import io.undertow.Handlers;
 import io.undertow.Undertow;
+import io.undertow.UndertowOptions;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
+import io.undertow.server.handlers.PathHandler;
+import io.undertow.server.protocol.http.HttpOpenListener;
 import io.undertow.util.Headers;
+import org.xnio.*;
+import org.xnio.channels.AcceptingChannel;
+
+import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 
 /**
  * Created by robot on 2017/11/5.
  */
 public class Run {
 
-    public static void main(final String[] args) {
-        Undertow server = Undertow.builder()
-                .addHttpListener(8080, "localhost")
-                .setHandler(new HttpHandler() {
+    public static void main(final String[] args) throws IOException {
 
-                    public void handleRequest(final HttpServerExchange exchange) throws Exception {
-                        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
-                        exchange.getResponseSender().send("Hello World");
-                    }
-                }).build();
-        server.start();
+        //注解处理器
+        InitAnnotation.init();
+
+        Xnio xnio = Xnio.getInstance();
+
+        XnioWorker worker = xnio.createWorker(OptionMap.builder()
+                .set(Options.WORKER_IO_THREADS, 4)
+                .set(Options.WORKER_TASK_CORE_THREADS, 40)
+                .set(Options.TCP_NODELAY, true)
+                .getMap());
+
+        OptionMap socketOptions = OptionMap.builder()
+                .set(Options.WORKER_IO_THREADS, 4)
+                .set(Options.TCP_NODELAY, true)
+                .set(Options.REUSE_ADDRESSES, true)
+                .getMap();
+
+        Pool<ByteBuffer> buffers = new ByteBufferSlicePool(BufferAllocator.DIRECT_BYTE_BUFFER_ALLOCATOR, 4096, 8192);
+
+        PathHandler pathHandler = new PathHandler();
+        pathHandler.addPrefixPath("/test",new UserHandler());
+
+        HttpOpenListener openListener = new HttpOpenListener(buffers, OptionMap.builder().set(UndertowOptions.BUFFER_PIPELINED_DATA, true).getMap());
+        openListener.setRootHandler(new RootHandler(pathHandler));
+            ChannelListener<AcceptingChannel<StreamConnection>> acceptListener = ChannelListeners.openListenerAdapter(openListener);
+            AcceptingChannel<? extends StreamConnection> server = worker.createStreamConnectionServer(new InetSocketAddress(Inet4Address.getByName("localhost"), 8000), acceptListener, socketOptions);
+        server.resumeAccepts();
+        }
     }
-}
