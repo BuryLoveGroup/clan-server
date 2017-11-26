@@ -12,7 +12,7 @@ import java.util.Properties;
 /**
  * Created by robot on 2017/11/6.
  */
-public class ConnectionPool {
+public class Redis {
 
     private static Properties properties = new Properties();
 

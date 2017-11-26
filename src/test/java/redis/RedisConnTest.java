@@ -1,6 +1,6 @@
 package redis;
 
-import com.clan.redis.ConnectionPool;
+import com.clan.redis.Redis;
 import org.testng.annotations.Test;
 import redis.clients.jedis.Jedis;
 
@@ -11,7 +11,7 @@ public class RedisConnTest {
 
     @Test
     public void testRedis(){
-        Jedis jedis = ConnectionPool.getJedis();
+        Jedis jedis = Redis.getJedis();
         jedis.set("test","hello");
         jedis.close();
     }

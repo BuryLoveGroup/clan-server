@@ -15,18 +15,6 @@ public class RootHandler implements HttpHandler {
     }
 
     public void handleRequest(HttpServerExchange exchange) throws Exception {
-        //设置默认的rsponse,即一个请求没有send数据时，调用此方法。此处生成404错误。
-        exchange.addDefaultResponseListener(new DefaultResponseListener() {
-            public boolean handleDefaultResponse(HttpServerExchange exchange) {
-                if (!exchange.isResponseChannelAvailable()) {
-                    return false;
-                } else {
-                    exchange.setStatusCode(404);
-                    exchange.getResponseSender().send("Please Check Your Url!");
-                    return true;
-                }
-            }
-        });
 
         //设置统一的responseHeader，采用RestFul风格，应该设置为json
         exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/html; charset=utf-8");
