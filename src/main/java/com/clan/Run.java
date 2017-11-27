@@ -3,15 +3,19 @@ package com.clan;
 import com.clan.annotation.InitAnnotation;
 import com.clan.handler.RootHandler;
 import com.clan.handler.UserHandler;
-import io.undertow.Handlers;
-import io.undertow.Undertow;
 import io.undertow.UndertowOptions;
-import io.undertow.server.HttpHandler;
-import io.undertow.server.HttpServerExchange;
 import io.undertow.server.handlers.PathHandler;
 import io.undertow.server.protocol.http.HttpOpenListener;
-import io.undertow.util.Headers;
-import org.xnio.*;
+import org.xnio.BufferAllocator;
+import org.xnio.ByteBufferSlicePool;
+import org.xnio.ChannelListener;
+import org.xnio.ChannelListeners;
+import org.xnio.OptionMap;
+import org.xnio.Options;
+import org.xnio.Pool;
+import org.xnio.StreamConnection;
+import org.xnio.Xnio;
+import org.xnio.XnioWorker;
 import org.xnio.channels.AcceptingChannel;
 
 import java.io.IOException;
@@ -46,12 +50,12 @@ public class Run {
         Pool<ByteBuffer> buffers = new ByteBufferSlicePool(BufferAllocator.DIRECT_BYTE_BUFFER_ALLOCATOR, 4096, 8192);
 
         PathHandler pathHandler = new PathHandler();
-        pathHandler.addPrefixPath("/test",new UserHandler());
+        pathHandler.addPrefixPath("/test", new UserHandler());
 
         HttpOpenListener openListener = new HttpOpenListener(buffers, OptionMap.builder().set(UndertowOptions.BUFFER_PIPELINED_DATA, true).getMap());
         openListener.setRootHandler(new RootHandler(pathHandler));
-            ChannelListener<AcceptingChannel<StreamConnection>> acceptListener = ChannelListeners.openListenerAdapter(openListener);
-            AcceptingChannel<? extends StreamConnection> server = worker.createStreamConnectionServer(new InetSocketAddress(Inet4Address.getByName("localhost"), 8000), acceptListener, socketOptions);
+        ChannelListener<AcceptingChannel<StreamConnection>> acceptListener = ChannelListeners.openListenerAdapter(openListener);
+        AcceptingChannel<? extends StreamConnection> server = worker.createStreamConnectionServer(new InetSocketAddress(Inet4Address.getByName("localhost"), 8000), acceptListener, socketOptions);
         server.resumeAccepts();
-        }
     }
+}
