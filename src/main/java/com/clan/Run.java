@@ -4,6 +4,7 @@ import com.clan.annotation.InitAnnotation;
 import com.clan.handler.RootHandler;
 import com.clan.handler.UserHandler;
 import com.clan.redis.Redis;
+import com.clan.websocket.WebsocketCallbackBuilder;
 import com.sun.org.apache.regexp.internal.RE;
 import io.undertow.Handlers;
 import io.undertow.Undertow;
@@ -46,36 +47,8 @@ public class Run {
 //        InitAnnotation.init();
 
         PathHandler pathHandler = new PathHandler();
-        pathHandler.addPrefixPath("/test", new UserHandler());
-        pathHandler.addPrefixPath("/chat", websocket(new WebSocketConnectionCallback() {
-            int i = 0;
-            public void onConnect(final WebSocketHttpExchange exchange, WebSocketChannel channel) {
-//                String chatToken = exchange.getRequestHeader("chatToken");
-//                if (StringUtils.isBlank(chatToken)) {
-//                    try {
-//                        channel.close();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                } else {
-//                    Jedis redisClient = Redis.getJedis();
-//                    String uid = redisClient.get(chatToken);
-//                    if (StringUtils.isBlank(uid)) {
-//                        WebSockets.sendText("end", channel, null);
-//                    }else {
-//                        channel.setAttribute("user",uid);
-//                    }
-//                }
-
-                channel.getReceiveSetter().set(new AbstractReceiveListener() {
-                    protected void onFullTextMessage(WebSocketChannel channel, BufferedTextMessage message) {
-                        //检验客户端
-                        WebSockets.sendText(String.valueOf(channel.getAttribute("user")), channel, null);
-                    }
-                });
-                channel.resumeReceives();
-            }
-        }));
+        pathHandler.addPrefixPath("/user", new UserHandler());
+        pathHandler.addPrefixPath("/chat", websocket(WebsocketCallbackBuilder.builder()));
 
         Undertow server = Undertow.builder()
                 .addHttpListener(8000, "0.0.0.0")
