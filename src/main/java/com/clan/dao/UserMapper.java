@@ -2,11 +2,16 @@ package com.clan.dao;
 
 import com.clan.bean.User;
 
-/**
- * Created by robot on 2017/11/7.
- */
 public interface UserMapper {
+    int deleteByPrimaryKey(Integer uid);
 
-    void regist(User user);
-    User getUserById();
+    int insert(User record);
+
+    int insertSelective(User record);
+
+    User selectByPrimaryKey(Integer uid);
+
+    int updateByPrimaryKeySelective(User record);
+
+    int updateByPrimaryKey(User record);
 }

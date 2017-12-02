@@ -1,9 +1,212 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-
-<mapper namespace="com.clan.dao.Test">
-
-    <select id="select" resultType="map" parameterType="String">
-        select * from "test"
-    </select>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.clan.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.clan.bean.User">
+    <id column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="clan_id" jdbcType="INTEGER" property="clanId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="sex" jdbcType="SMALLINT" property="sex" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="autograph" jdbcType="VARCHAR" property="autograph" />
+    <result column="grade" jdbcType="SMALLINT" property="grade" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="regist_time" jdbcType="TIMESTAMP" property="registTime" />
+    <result column="del_time" jdbcType="TIMESTAMP" property="delTime" />
+    <result column="vip" jdbcType="SMALLINT" property="vip" />
+    <result column="vip_expires" jdbcType="TIMESTAMP" property="vipExpires" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, clan_id, name, phone, password, sex, area, avatar, autograph, grade, birthday, 
+    regist_time, del_time, vip, vip_expires
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where uid = #{uid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where uid = #{uid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.clan.bean.User">
+    insert into user (uid, clan_id, name, 
+      phone, password, sex, 
+      area, avatar, autograph, 
+      grade, birthday, regist_time, 
+      del_time, vip, vip_expires
+      )
+    values (#{uid,jdbcType=INTEGER}, #{clanId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{sex,jdbcType=SMALLINT}, 
+      #{area,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{autograph,jdbcType=VARCHAR}, 
+      #{grade,jdbcType=SMALLINT}, #{birthday,jdbcType=DATE}, #{registTime,jdbcType=TIMESTAMP}, 
+      #{delTime,jdbcType=TIMESTAMP}, #{vip,jdbcType=SMALLINT}, #{vipExpires,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.clan.bean.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="clanId != null">
+        clan_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="area != null">
+        area,
+      </if>
+      <if test="avatar != null">
+        avatar,
+      </if>
+      <if test="autograph != null">
+        autograph,
+      </if>
+      <if test="grade != null">
+        grade,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="registTime != null">
+        regist_time,
+      </if>
+      <if test="delTime != null">
+        del_time,
+      </if>
+      <if test="vip != null">
+        vip,
+      </if>
+      <if test="vipExpires != null">
+        vip_expires,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="clanId != null">
+        #{clanId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=SMALLINT},
+      </if>
+      <if test="area != null">
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="autograph != null">
+        #{autograph,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null">
+        #{grade,jdbcType=SMALLINT},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="registTime != null">
+        #{registTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delTime != null">
+        #{delTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="vip != null">
+        #{vip,jdbcType=SMALLINT},
+      </if>
+      <if test="vipExpires != null">
+        #{vipExpires,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.clan.bean.User">
+    update user
+    <set>
+      <if test="clanId != null">
+        clan_id = #{clanId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=SMALLINT},
+      </if>
+      <if test="area != null">
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="autograph != null">
+        autograph = #{autograph,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null">
+        grade = #{grade,jdbcType=SMALLINT},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="registTime != null">
+        regist_time = #{registTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delTime != null">
+        del_time = #{delTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="vip != null">
+        vip = #{vip,jdbcType=SMALLINT},
+      </if>
+      <if test="vipExpires != null">
+        vip_expires = #{vipExpires,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.clan.bean.User">
+    update user
+    set clan_id = #{clanId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=SMALLINT},
+      area = #{area,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      autograph = #{autograph,jdbcType=VARCHAR},
+      grade = #{grade,jdbcType=SMALLINT},
+      birthday = #{birthday,jdbcType=DATE},
+      regist_time = #{registTime,jdbcType=TIMESTAMP},
+      del_time = #{delTime,jdbcType=TIMESTAMP},
+      vip = #{vip,jdbcType=SMALLINT},
+      vip_expires = #{vipExpires,jdbcType=TIMESTAMP}
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
 </mapper>

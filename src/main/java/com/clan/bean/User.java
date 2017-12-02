@@ -1,28 +1,37 @@
 package com.clan.bean;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
-/**
- * 未使用java8中的时间类型
- */
 public class User {
-
     private Integer uid;
-    private Integer calnId;
+
+    private Integer clanId;
+
     private String name;
+
     private String phone;
+
     private String password;
-    private Integer sex;
+
+    private Short sex;
+
     private String area;
+
     private String avatar;
+
     private String autograph;
-    private Integer grade;
+
+    private Short grade;
+
     private Date birthday;
-    private Timestamp registTime;
-    private Timestamp delTime;
-    private Integer vip;
-    private Timestamp vipExpires;
+
+    private Date registTime;
+
+    private Date delTime;
+
+    private Short vip;
+
+    private Date vipExpires;
 
     public Integer getUid() {
         return uid;
@@ -32,12 +41,12 @@ public class User {
         this.uid = uid;
     }
 
-    public Integer getCalnId() {
-        return calnId;
+    public Integer getClanId() {
+        return clanId;
     }
 
-    public void setCalnId(Integer calnId) {
-        this.calnId = calnId;
+    public void setClanId(Integer clanId) {
+        this.clanId = clanId;
     }
 
     public String getName() {
@@ -45,7 +54,7 @@ public class User {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name == null ? null : name.trim();
     }
 
     public String getPhone() {
@@ -53,7 +62,7 @@ public class User {
     }
 
     public void setPhone(String phone) {
-        this.phone = phone;
+        this.phone = phone == null ? null : phone.trim();
     }
 
     public String getPassword() {
@@ -61,14 +70,14 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = password == null ? null : password.trim();
     }
 
-    public Integer getSex() {
+    public Short getSex() {
         return sex;
     }
 
-    public void setSex(Integer sex) {
+    public void setSex(Short sex) {
         this.sex = sex;
     }
 
@@ -77,7 +86,7 @@ public class User {
     }
 
     public void setArea(String area) {
-        this.area = area;
+        this.area = area == null ? null : area.trim();
     }
 
     public String getAvatar() {
@@ -85,7 +94,7 @@ public class User {
     }
 
     public void setAvatar(String avatar) {
-        this.avatar = avatar;
+        this.avatar = avatar == null ? null : avatar.trim();
     }
 
     public String getAutograph() {
@@ -93,14 +102,14 @@ public class User {
     }
 
     public void setAutograph(String autograph) {
-        this.autograph = autograph;
+        this.autograph = autograph == null ? null : autograph.trim();
     }
 
-    public Integer getGrade() {
+    public Short getGrade() {
         return grade;
     }
 
-    public void setGrade(Integer grade) {
+    public void setGrade(Short grade) {
         this.grade = grade;
     }
 
@@ -112,35 +121,35 @@ public class User {
         this.birthday = birthday;
     }
 
-    public Timestamp getRegistTime() {
+    public Date getRegistTime() {
         return registTime;
     }
 
-    public void setRegistTime(Timestamp registTime) {
+    public void setRegistTime(Date registTime) {
         this.registTime = registTime;
     }
 
-    public Timestamp getDelTime() {
+    public Date getDelTime() {
         return delTime;
     }
 
-    public void setDelTime(Timestamp delTime) {
+    public void setDelTime(Date delTime) {
         this.delTime = delTime;
     }
 
-    public Integer getVip() {
+    public Short getVip() {
         return vip;
     }
 
-    public void setVip(Integer vip) {
+    public void setVip(Short vip) {
         this.vip = vip;
     }
 
-    public Timestamp getVipExpires() {
+    public Date getVipExpires() {
         return vipExpires;
     }
 
-    public void setVipExpires(Timestamp vipExpires) {
+    public void setVipExpires(Date vipExpires) {
         this.vipExpires = vipExpires;
     }
 }
