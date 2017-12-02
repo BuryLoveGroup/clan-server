@@ -28,6 +28,13 @@
     from user
     where uid = #{uid,jdbcType=INTEGER}
   </select>
+  <select id="selectByNameAndPassword" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where name = #{name,jdbcType=VARCHAR}
+    AND password = #{password,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user
     where uid = #{uid,jdbcType=INTEGER}

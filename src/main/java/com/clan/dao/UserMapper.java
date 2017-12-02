@@ -2,6 +2,8 @@ package com.clan.dao;
 
 import com.clan.bean.User;
 
+import java.util.Map;
+
 public interface UserMapper {
     int deleteByPrimaryKey(Integer uid);
 
@@ -14,4 +16,6 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    User selectByNameAndPassword(Map map);
 }
